@@ -8,20 +8,18 @@ async function main() {
   const swapContract = await SwapContract.deploy();
 
   await swapContract.deployed();
-
   console.log("Swap contract address", swapContract.address);
 
   //DEPLOYING THE TOKEN CONTRACT
   const TokenA = await ethers.getContractFactory("tokenA")
   const tokenA = await TokenA.deploy();
-  
   await tokenA.deployed();
   console.log("Token A contract address", tokenA.address);
 
   const TokenB = await ethers.getContractFactory("tokenB")
   const tokenB = await TokenB.deploy();
-
   await tokenB.deployed();
+
   console.log("Token B contract address", tokenB.address);
 
 }

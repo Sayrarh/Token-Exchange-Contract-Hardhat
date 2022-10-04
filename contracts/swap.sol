@@ -33,9 +33,9 @@ contract Swapper{
     mapping(uint => OrderDetails) _details;
 
     /// @dev function to create order
-    function createOrder(address _tokenFrom, address _tokenTo, uint _amountIn, uint _amountOut, uint _orderID) external {
+    function createOrder(address _tokenFrom, address _tokenTo, uint _amountIn, uint _amountOut) external {
         require(IERC20(_tokenFrom).transferFrom(msg.sender, address(this), _amountIn), "failed");
-        OrderDetails storage od = _details[_orderID];
+        OrderDetails storage od = _details[ID];
         od.tokenFrom = _tokenFrom;
         od.tokenTo = _tokenTo;
         od.amountIn = _amountIn;
@@ -47,14 +47,15 @@ contract Swapper{
     }
 
     /// @dev function to execute order
+
     function executeOrder(uint _userID) external{
         OrderDetails storage od = _details[_userID];
         require(od.status == true);
         uint amount = od.amountOut;
         require(IERC20(od.tokenTo).balanceOf(msg.sender) > amount, "balance not sufficient");
         require(IERC20(od.tokenTo).transferFrom(msg.sender, address(this), amount), "transaction failed");
-        //IERC20(od.tokenFrom).transfer(msg.sender, od.amountIn);
-        IERC20(address(this)).transfer(msg.sender, od.amountIn);
+        IERC20(od.tokenFrom).transfer(msg.sender, od.amountIn);
+        //IERC20(address(this)).transfer(msg.sender, od.amountIn);
         IERC20(od.tokenTo).transfer(od.userAddr, amount);
 
         //emit IERC20.Transfer( od.tokenTo, od.userAddr, amount);

@@ -9,10 +9,12 @@ contract tokenB is ERC20, Ownable {
 
 
     constructor() ERC20("tokenB", "TBN") {
-        _mint(msg.sender, 2000e18);
+        _mint(address(this), TotalSupply);
     }
 
-    function mint(uint _amount) internal {
-        _mint(msg.sender, _amount);
+    function transferTo(address _addr, uint _amount) external {
+    uint balContract = balanceOf(address(this));
+    require(balContract >= _amount, "not enough balance");
+    _transfer(address(this), _addr, _amount);
     }
 }
