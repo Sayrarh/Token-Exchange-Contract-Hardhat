@@ -22,6 +22,22 @@ async function main() {
 
   console.log("Token B contract address", tokenB.address);
 
+  const valid2 = "0xAEB9219D416D28f2EADB0A6C414E2776Fd9CD879"
+  const valid1 = "0x637CcDeBB20f849C0AA1654DEe62B552a058EA87"
+
+    
+    //Interaction with the token contracts
+    const TokenAInteract = await ethers.getContractAt("tokenA", tokenA.address);
+    const TokenBInteract = await ethers.getContractAt("tokenB", tokenB.address);
+
+    const amt = await ethers.utils.parseUnits("100")
+
+    const transferA = await TokenAInteract.transferTo(valid1, amt);
+    const transferB = await TokenBInteract.transferTo(valid2, amt);
+
+    console.log("Transfer tokens A:", transferA);
+    console.log("Transfer tokens B:", transferB);
+
 }
 
 // We recommend this pattern to be able to use async/await everywhere
